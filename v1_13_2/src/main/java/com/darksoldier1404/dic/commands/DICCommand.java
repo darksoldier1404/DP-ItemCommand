@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("all")
@@ -131,6 +132,14 @@ public class DICCommand implements CommandExecutor, TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if(args.length == 1) {
+            return Arrays.asList("L", "R", "F", "A", "D", "C", "CD");
+        }
+        if(args.length == 2) {
+            if(args[0].equalsIgnoreCase("A") || args[0].equalsIgnoreCase("D")) {
+                return Arrays.asList("L", "R", "F");
+            }
+        }
         return null;
     }
 }
