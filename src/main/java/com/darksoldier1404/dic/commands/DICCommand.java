@@ -10,38 +10,37 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("all")
 public class DICCommand implements CommandExecutor, TabCompleter {
-    private final String prefix = ItemCommand.prefix;
+    private final ItemCommand plugin = ItemCommand.getInstance();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(!sender.isOp()) {
-            sender.sendMessage(prefix + "§c관리자 전용 명령어 입니다.");
+            sender.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_only_opreator_can_use"));
             return false;
         }
         if(!(sender instanceof Player)) {
-            sender.sendMessage(prefix + "§a플레이어만 사용 가능합니다.");
+            sender.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_only_player_can_use"));
             return false;
         }
         Player p = (Player) sender;
         if(args.length == 0) {
-            p.sendMessage(prefix + "/dic L <command> - 좌클릭시 실행하는 커맨드를 설정합니다.");
-            p.sendMessage(prefix + "/dic R <command> - 우클릭시 실행하는 커맨드를 설정합니다.");
-            p.sendMessage(prefix + "/dic F <command> - 쉬프트 + F 시 실행하는 커맨드를 설정합니다.");
-            p.sendMessage(prefix + "/dic A <L, R, F> - 해당 액션의 커맨드를 관리자 권한으로 실행되게 만듭니다. (토글)");
-            p.sendMessage(prefix + "/dic D <L, R, F> - 해당 액션의 커맨드를 삭제합니다.");
-            p.sendMessage(prefix + "/dic C - 사용시 소모되게 만들거나 소모되지 않게 만듭니다.");
-            p.sendMessage(prefix + "/dic CD <sec> - 커맨드당 사용 쿨타임을 설정합니다.");
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_L"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_R"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_F"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_A"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_D"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_C"));
+            p.sendMessage(plugin.prefix + plugin.lang.get("cmd_info_CD"));
             return false;
         }
         if(args[0].equalsIgnoreCase("L")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "커맨드를 추가해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_command_required"));
                 return false;
             }
             DICFunction.addLeftCommand(p, args);
@@ -49,7 +48,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
         }
         if(args[0].equalsIgnoreCase("R")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "커맨드를 추가해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_command_required"));
                 return false;
             }
             DICFunction.addRightCommand(p, args);
@@ -57,7 +56,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
         }
         if(args[0].equalsIgnoreCase("F")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "커맨드를 추가해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_command_required"));
                 return false;
             }
             DICFunction.addShiftSwapCommand(p, args);
@@ -65,7 +64,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
         }
         if(args[0].equalsIgnoreCase("A")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "액션을 선택해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_action_required"));
                 return false;
             }
             if(args.length == 2) {
@@ -81,13 +80,13 @@ public class DICCommand implements CommandExecutor, TabCompleter {
                     DICFunction.makeAdminSwapCommand(p);
                     return false;
                 }
-                p.sendMessage(prefix + "액션을 선택해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_action_required"));
                 return false;
             }
         }
         if(args[0].equalsIgnoreCase("D")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "액션을 선택해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_command_required"));
                 return false;
             }
             if(args.length == 2) {
@@ -103,7 +102,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
                     DICFunction.removeShiftSwapCommand(p);
                     return false;
                 }
-                p.sendMessage(prefix + "액션을 선택해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_command_required"));
                 return false;
             }
         }
@@ -113,7 +112,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
         }
         if(args[0].equalsIgnoreCase("CD")) {
             if(args.length == 1) {
-                p.sendMessage(prefix + "쿨다운을 입력해주세요.");
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_cooldown_required"));
                 return false;
             }
             if(args.length == 2) {
@@ -122,7 +121,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
                     DICFunction.makeCooldown(p, cooldown);
                     return false;
                 }catch (Exception e){
-                    p.sendMessage(prefix + "숫자만 입력해주세요!");
+                    p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_number_required"));
                     return false;
                 }
             }
