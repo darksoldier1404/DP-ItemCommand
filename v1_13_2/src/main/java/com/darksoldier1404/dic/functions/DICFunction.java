@@ -9,17 +9,19 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static com.darksoldier1404.dic.ItemCommand.prefix;
+
 @SuppressWarnings("all")
 public class DICFunction {
-    private static final String prefix = ItemCommand.prefix;
+    private static final ItemCommand plugin = ItemCommand.getInstance();
 
     public static void addLeftCommand(Player p, String[] args) {
         if (isHoldItem(p)) {
             String cmd = getArgs(args, 1);
             p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "left_cmd", cmd));
-            p.sendMessage(prefix + "§a좌클릭 커맨드 등록 : " + cmd);
+            p.sendMessage(prefix + plugin.lang.getWithArgs("func_left_cmd_registered", cmd));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -27,9 +29,9 @@ public class DICFunction {
         if (isHoldItem(p)) {
             String cmd = getArgs(args, 1);
             p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "right_cmd", cmd));
-            p.sendMessage(prefix + "§a우클릭 커맨드 등록 : " + cmd);
+            p.sendMessage(prefix + plugin.lang.getWithArgs("func_right_cmd_registered", cmd));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -37,36 +39,36 @@ public class DICFunction {
         if (isHoldItem(p)) {
             String cmd = getArgs(args, 1);
             p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "shift_f_cmd", cmd));
-            p.sendMessage(prefix + "§a쉬프트 스왑 커맨드 등록 : " + cmd);
+            p.sendMessage(prefix + plugin.lang.getWithArgs("func_shift_swap_cmd_registered", cmd));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
     public static void removeLeftCommand(Player p) {
         if (isHoldItem(p)) {
             p.setItemInHand(NBT.removeTag(p.getItemInHand(), "left_cmd"));
-            p.sendMessage(prefix + "§a좌클릭 커맨드가 삭제 되었습니다.");
+            p.sendMessage(prefix + plugin.lang.get("func_left_cmd_deleted"));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
     public static void removeRightCommand(Player p) {
         if (isHoldItem(p)) {
             p.setItemInHand(NBT.removeTag(p.getItemInHand(), "right_cmd"));
-            p.sendMessage(prefix + "§a우클릭 커맨드가 삭제 되었습니다.");
+            p.sendMessage(prefix + plugin.lang.get("func_right_cmd_deleted"));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
     public static void removeShiftSwapCommand(Player p) {
         if (isHoldItem(p)) {
             p.setItemInHand(NBT.removeTag(p.getItemInHand(), "shift_f_cmd"));
-            p.sendMessage(prefix + "§a쉬프트 스왑 커맨드가 삭제 되었습니다.");
+            p.sendMessage(prefix + plugin.lang.get("func_shift_swap_cmd_deleted"));
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -75,16 +77,16 @@ public class DICFunction {
             if (NBT.hasTagKey(p.getItemInHand(), "left_cmd")) {
                 if (NBT.hasTagKey(p.getItemInHand(), "left_cmd_isAdmin")) {
                     p.setItemInHand(NBT.removeTag(p.getItemInHand(), "left_cmd_isAdmin"));
-                    p.sendMessage(prefix + "§a좌클릭 커맨드가 유저 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_left_cmd_make_admin"));
                 } else {
                     p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "left_cmd_isAdmin", "true"));
-                    p.sendMessage(prefix + "§a좌클릭 커맨드가 관리자 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_left_cmd_make_admin"));
                 }
             } else {
-                p.sendMessage(prefix + "§c좌클릭 커맨드가 없습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_left_cmd_is_not_registered"));
             }
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -93,16 +95,16 @@ public class DICFunction {
             if (NBT.hasTagKey(p.getItemInHand(), "right_cmd")) {
                 if (NBT.hasTagKey(p.getItemInHand(), "right_cmd_isAdmin")) {
                     p.setItemInHand(NBT.removeTag(p.getItemInHand(), "right_cmd_isAdmin"));
-                    p.sendMessage(prefix + "§a우클릭 커맨드가 유저 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_right_cmd_make_admin"));
                 } else {
                     p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "right_cmd_isAdmin", "true"));
-                    p.sendMessage(prefix + "§a우클릭 커맨드가 관리자 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_right_cmd_make_admin"));
                 }
             } else {
-                p.sendMessage(prefix + "§c우클릭 커맨드가 없습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_right_cmd_is_not_registered"));
             }
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -111,16 +113,16 @@ public class DICFunction {
             if (NBT.hasTagKey(p.getItemInHand(), "shift_f_cmd")) {
                 if (NBT.hasTagKey(p.getItemInHand(), "shift_f_cmd_isAdmin")) {
                     p.setItemInHand(NBT.removeTag(p.getItemInHand(), "shift_f_cmd_isAdmin"));
-                    p.sendMessage(prefix + "§a쉬프트+F 커맨드가 유저 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_shift_swap_cmd_make_admin"));
                 } else {
                     p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "shift_f_cmd_isAdmin", "true"));
-                    p.sendMessage(prefix + "§a쉬프트+F 커맨드가 관리자 권한으로 실행 됩니다.");
+                    p.sendMessage(prefix + plugin.lang.get("func_shift_swap_cmd_make_admin"));
                 }
             } else {
-                p.sendMessage(prefix + "§c우클릭 커맨드가 없습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_shift_swap_cmd_is_not_registered"));
             }
         } else {
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -128,13 +130,13 @@ public class DICFunction {
         if(isHoldItem(p)) {
             if(NBT.hasTagKey(p.getItemInHand(), "isConsume")) {
                 p.setItemInHand(NBT.removeTag(p.getItemInHand(), "isConsume"));
-                p.sendMessage(prefix + "§a무한정 사용 가능한 아이템으로 변경되었습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_make_not_consume_item"));
             }else{
                 p.setItemInHand(NBT.setStringTag(p.getItemInHand(), "isConsume", "true"));
-                p.sendMessage(prefix + "§a1회만 사용 가능한 아이템으로 변경되었습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_make_consume_item"));
             }
         }else{
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
@@ -159,13 +161,13 @@ public class DICFunction {
         if(isHoldItem(p)) {
             if(NBT.hasTagKey(p.getItemInHand(), "cooldown") || cooldown == 0) {
                 p.setItemInHand(NBT.removeTag(p.getItemInHand(), "cooldown"));
-                p.sendMessage(prefix + "§a쿨다운을 삭제하였습니다.");
+                p.sendMessage(prefix + plugin.lang.get("func_cooldown_deleted"));
             }else{
                 p.setItemInHand(NBT.setFloatTag(p.getItemInHand(), "cooldown", cooldown));
-                p.sendMessage(prefix + "§a쿨다운을 " + cooldown + "초로 설정하였습니다.");
+                p.sendMessage(prefix + plugin.lang.getWithArgs("func_cooldown_set", String.valueOf(cooldown)));
             }
         }else{
-            p.sendMessage(prefix + "§c아이템을 손에 들어주세요.");
+            p.sendMessage(prefix + plugin.lang.get("func_item_required"));
         }
     }
 
