@@ -3,14 +3,14 @@ plugins {
 }
 
 group 'com.darksoldier1404'
-version = '1.0.0.3'
+version = '1.0.0.4'
 
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 configurations {
-    jar.archiveName = name + '-_v1_18_2-' + version + '.jar'
+    jar.archiveName = name + '-_v1_19-' + version + '.jar'
 }
 jar {
     destinationDirectory.set(file("$rootDir/jars"))
