@@ -1,6 +1,7 @@
 package com.darksoldier1404.dic.commands;
 
 import com.darksoldier1404.dic.ItemCommand;
+import com.darksoldier1404.dic.enums.CommandAction;
 import com.darksoldier1404.dic.functions.DICFunction;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -116,9 +117,27 @@ public class DICCommand implements CommandExecutor, TabCompleter {
                 return false;
             }
             if(args.length == 2) {
+                p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_cooldown_required"));
+                return false;
+            }
+            if(args.length == 3) {
                 try{
-                    float cooldown = Float.parseFloat(args[1]);
-                    DICFunction.makeCooldown(p, cooldown);
+                    float cooldown = Float.parseFloat(args[2]);
+                    CommandAction ca = null;
+                    if(args[1].equalsIgnoreCase("L")) {
+                        ca = CommandAction.LEFT;
+                    }
+                    else if(args[1].equalsIgnoreCase("R")) {
+                        ca = CommandAction.RIGHT;
+                    }
+                    else if(args[1].equalsIgnoreCase("F")) {
+                        ca = CommandAction.SWAP;
+                    }
+                    if(ca == null) {
+                        p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_action_required"));
+                        return false;
+                    }
+                    DICFunction.makeCooldown(p, cooldown, ca);
                     return false;
                 }catch (Exception e){
                     p.sendMessage(plugin.prefix + plugin.lang.get("cmd_msg_number_required"));
@@ -136,7 +155,7 @@ public class DICCommand implements CommandExecutor, TabCompleter {
             return Arrays.asList("L", "R", "F", "A", "D", "C", "CD");
         }
         if(args.length == 2) {
-            if(args[0].equalsIgnoreCase("A") || args[0].equalsIgnoreCase("D")) {
+            if(args[0].equalsIgnoreCase("A") || args[0].equalsIgnoreCase("D") || args[0].equalsIgnoreCase("CD")) {
                 return Arrays.asList("L", "R", "F");
             }
         }

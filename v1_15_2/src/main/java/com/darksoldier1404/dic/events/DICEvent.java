@@ -1,5 +1,6 @@
 package com.darksoldier1404.dic.events;
 
+import com.darksoldier1404.dic.enums.CommandAction;
 import com.darksoldier1404.dic.functions.DICFunction;
 import com.darksoldier1404.dppc.utils.NBT;
 import org.bukkit.entity.Player;
@@ -21,7 +22,7 @@ public class DICEvent implements Listener {
                 if (NBT.hasTagKey(item, "left_cmd")) {
                     e.setCancelled(true);
                     String cmd = NBT.getStringTag(item, "left_cmd");
-                    if (DICFunction.isCooldown(p, cmd)) {
+                    if (DICFunction.isCooldown(p, item, CommandAction.LEFT)) {
                         return;
                     }
                     if (NBT.hasTagKey(item, "isConsume")) {
@@ -34,13 +35,15 @@ public class DICEvent implements Listener {
                     } else {
                         p.performCommand(cmd);
                     }
-                    DICFunction.cooldown(p, cmd, NBT.getFloatTag(item, "cooldown"));
+                    if(DICFunction.hasCooldown(p, item, CommandAction.LEFT)) {
+                        DICFunction.cooldown(p, CommandAction.LEFT, NBT.getIntegerTag(item, "cooldown_left"));
+                    }
                 }
             } else if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (NBT.hasTagKey(item, "right_cmd")) {
                     e.setCancelled(true);
                     String cmd = NBT.getStringTag(item, "right_cmd");
-                    if (DICFunction.isCooldown(p, cmd)) {
+                    if (DICFunction.isCooldown(p, item, CommandAction.RIGHT)) {
                         return;
                     }
                     if (NBT.hasTagKey(item, "isConsume")) {
@@ -53,7 +56,9 @@ public class DICEvent implements Listener {
                     } else {
                         p.performCommand(cmd);
                     }
-                    DICFunction.cooldown(p, cmd, NBT.getFloatTag(item, "cooldown"));
+                    if(DICFunction.hasCooldown(p, item, CommandAction.RIGHT)) {
+                        DICFunction.cooldown(p, CommandAction.RIGHT, NBT.getIntegerTag(item, "cooldown_right"));
+                    }
                 }
             }
         }
@@ -68,7 +73,7 @@ public class DICEvent implements Listener {
                 if (NBT.hasTagKey(item, "shift_f_cmd")) {
                     e.setCancelled(true);
                     String cmd = NBT.getStringTag(item, "shift_f_cmd");
-                    if (DICFunction.isCooldown(p, cmd)) {
+                    if (DICFunction.isCooldown(p, item, CommandAction.SWAP)) {
                         return;
                     }
                     if (NBT.hasTagKey(item, "isConsume")) {
@@ -81,7 +86,9 @@ public class DICEvent implements Listener {
                     } else {
                         p.performCommand(cmd);
                     }
-                    DICFunction.cooldown(p, cmd, NBT.getLongTag(item, "cooldown"));
+                    if(DICFunction.hasCooldown(p, item, CommandAction.SWAP)) {
+                        DICFunction.cooldown(p, CommandAction.SWAP, NBT.getIntegerTag(item, "cooldown_swap"));
+                    }
                 }
             }
         }
